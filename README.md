@@ -23,7 +23,11 @@ Ez az app a már betanított modellt használja 1 óra múlvai predikció kész�
 
 Ha a meglévő modellt szeretnénk használni akkor először a parancssorban töltsük le a következő kellékeket az alábbi kóddal:
 
-pip install tkinter pandas numpy tensorflow matplotlib scikit-learn
+ pip install pandas==2.2.3 
+ pip install numpy==1.26.0 
+ pip install tensorflow==2.18.0 
+ pip install scikit-learn==1.5.2 
+ pip install matplotlib==3.9.3 
 
 Fontos a lehető legújabb python verzió, és a "Add Python 3.x to PATH" opció, különben nem fog lefutni a program.  Ezután töltsük le az appot és a modellt.
 
