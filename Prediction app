@@ -1,0 +1,133 @@
+import tkinter as tk
+from tkinter import filedialog
+import pandas as pd
+import numpy as np
+from tensorflow.keras.models import load_model
+from sklearn.preprocessing import MinMaxScaler
+import os
+import tensorflow as tf
+
+# Környezeti változók + figyelmeztetések csökkentésére
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
+# Verziók ell
+print("TensorFlow verzió:", tf.__version__)
+print("NumPy verzió:", np.__version__)
+
+model_path = ""
+excel_path = ""
+
+# App
+def create_text_box_app():
+    global model_path, excel_path
+    
+    root = tk.Tk()
+    root.title("Prediction")
+    root.geometry("700x500")
+
+    # Modell kiválasztása
+    def select_model():
+        global model_path
+        model_path = filedialog.askopenfilename(
+            initialdir="/", title="Select Model", filetypes=(("Keras model", "*.keras"), ("All files", "*.*"))
+        )
+        label1.config(text="Modell: " + model_path)
+
+    # Excel fájl kiválasztása
+    def select_excel():
+        global excel_path
+        excel_path = filedialog.askopenfilename(
+            initialdir="/", title="Select Excel File", filetypes=(("Excel files", "*.xlsx"), ("All files", "*.*"))
+        )
+        label2.config(text="Excel: " + excel_path)
+
+    # Predikció készítése
+    def make_prediction():
+        global model_path, excel_path
+
+        # Ellenőrizzük, hogy a fájlok ki lettek-e választva
+        if not model_path:
+            label3.config(text="Hiba: Nincs kiválasztva modell fájl!")
+            return
+        if not excel_path:
+            label3.config(text="Hiba: Nincs kiválasztva Excel fájl!")
+            return
+
+        try:
+            # Modell betöltése
+            print("Modell betöltése...")
+            model = load_model(model_path)
+            print("Modell sikeresen betöltve.")
+
+            # Excel fájl beolvasása
+            print("Excel fájl beolvasása...")
+            df = pd.read_excel(excel_path)
+
+            # Adatok tisztítása
+            if 'close' not in df.columns:
+                label3.config(text="Hiba: A 'close' oszlop nem található a fájlban!")
+                return
+
+            df['close'] = pd.to_numeric(df['close'], errors='coerce')
+            df = df.dropna(subset=['close'])
+            print("Adatok tisztítása megtörtént.")
+
+            # Skálázás
+            scaler = MinMaxScaler(feature_range=(0, 1))
+            data_scaled = scaler.fit_transform(df['close'].values.reshape(-1, 1)).flatten()
+
+            # Ellenőrizzük, hogy van-e elég adat
+            lookback = 4
+            if len(data_scaled) < lookback:
+                label3.config(text="Hiba: Nincs elegendő adat az előrejelzéshez!")
+                return
+
+            last_sequence = data_scaled[-lookback:].reshape((1, lookback, 1))
+            print("Predikciós bemeneti adatok előkészítése megtörtént.")
+
+            # Predikció
+            print("Predikció futtatása...")
+            predicted_value_scaled = model.predict(last_sequence)[0][0]
+            predicted_value = scaler.inverse_transform([[predicted_value_scaled]])[0][0]
+            last_price = df['close'].values[-1]
+
+            # Eredmény kiírása
+            if np.isnan(predicted_value):
+                result = "Hiba történt az előrejelzésnél!"
+            elif predicted_value > last_price:
+                result = f"BUYY!!! Predikált ár 1 óra múlva: {predicted_value:.2f} (Mostani ár: {last_price:.2f})"
+            else:
+                result = f"GO SHORT! Predikált ár 1 óra múlva: {predicted_value:.2f} (Mostani ár: {last_price:.2f})"
+
+            label3.delete("1.0", tk.END)
+            label3.insert(tk.END, result)
+            print("Predikció sikeres:", result)
+        except Exception as e:
+            import traceback
+            error_message = traceback.format_exc()
+            label3.delete("1.0", tk.END)
+            label3.insert(tk.END, f"Hiba: {error_message}")
+            print("Hiba történt:", error_message)
+
+    button_model = tk.Button(root, text="Model kiválasztása", command=select_model)
+    button_model.pack(pady=10)
+
+    button_excel = tk.Button(root, text="Excel file kiválasztása", command=select_excel)
+    button_excel.pack(pady=10)
+
+    button_predict = tk.Button(root, bg="green", text="Predikció készítése", command=make_prediction)
+    button_predict.pack(pady=10)
+
+    label1 = tk.Label(root, text="Modell fájl: Nincs kiválasztva", bg="lightgrey", width=100, height=2)
+    label1.pack(pady=5)
+
+    label2 = tk.Label(root, text="Excel fájl: Nincs kiválasztva", bg="lightgrey", width=100, height=2)
+    label2.pack(pady=5)
+
+    label3 = tk.Text(root, bg="lightgrey", wrap="word", width=100, height=20)
+    label3.pack(pady=10)
+
+    root.mainloop()
+
+create_text_box_app()
