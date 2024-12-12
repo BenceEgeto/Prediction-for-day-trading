@@ -14,10 +14,12 @@ A fileok között, 'doge_dataset(15min).xlsx'. Ez az adatsor kellően hosszú, h
 A programhoz LSTM alapú keras-t használtunk, mivel idősoros adatokkal dolgozunk. 
 A tanítóadatot egy excel fileból töltjük be a modellba, amik egy adott (jelen esetben a doge) coin 15 percenkénti árát tartalmazza. Ezeket 0 és 1 közé skálázzuk, majd szegmensekre osztjuk, ami a lookback érték. Így 4 szegmens pontosan 1 órát fog lefedni. Az így kapott adattsorból, azt feltételezve hogy az árfolyamváltozásokban rövidtávon szabályos alakzatok lelhetők fel, a modell megtanulja ezeket és ezek alapján prediktál. A predikció után a modell 4*15 perces, azaz egy órás szegmensekben fogja a kimenetet is adni, amit aztán visszaskáláz az eredeti tartományba.
 https://colab.research.google.com/drive/1mJ5I8nMvDQH7GtPVPkHSH1qRTqVf2DGK?usp=sharing
+Ezen a munkalapon megtalálható a modell, illetve egy azt használó (és a Prediction app alapjául szolgáló) egyszerűbb program is.
 
 #Prediction_app
 
 Ez az app a már betanított modellt használja 1 óra múlvai predikció készítésére. Ki tudjuk választani a prediktálni kívánt adatsort, mely kellő mennyiségű adatot és ezeket 15 perces felbontásban tartalmazza. Fontos még, hogy a program a záróárakat nézi, ami azt jelenti, hogy csak a 15 perces záróadatokat tartalmazó adatot tartalmazó file alapján készíti az elvárt predikciót. (Természetesen a 15 percestől eltérő felosztást is lehet használni, ekkor pl 5 perc esetén 5*4 perc azaz 20 perc múlvára fogja jósolni az értéket, habár a kimeneten továbbra is 1 óra szerepel, ezt a felhasználónak kell figyelembe vennie.) A modellt is ki kell választani amivel jósolni szeretnénk, ezt magunk is legenerálhatjuk, de egy már meglévő modell is található a fileok között ('buy_or_short.keras').
+
 
 #installtion
 
@@ -29,7 +31,7 @@ Ha a meglévő modellt szeretnénk használni akkor először a parancssorban t�
  pip install scikit-learn==1.5.2 
  pip install matplotlib==3.9.3 
 
-Fontos a lehető legújabb python verzió, és a "Add Python 3.x to PATH" opció, különben nem fog lefutni a program.  Ezután töltsük le az appot és a modellt.
+Ajánlott python 3.10.9-es verziót használmi, és a "Add Python 3.x to PATH" opció, különben nem fog lefutni a program.  Ezután töltsük le az appot és a modellt.
 
 #Use
 
