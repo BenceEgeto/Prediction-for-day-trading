@@ -29,7 +29,7 @@ Fontos a lehető legújabb python verzió, és a "Add Python 3.x to PATH" opció
 
 #Use
 
-Ha letöltöttünk minden szükséges filet, az app megnyitásávan egy ablak jelenik meg, ahol kiválaszthatjuk a modellt (ajánlott: 'buy_or_short.keras'), ezután a prediktálni kívánt adatsort .xlsx kiterjesztésben. Az ablakkal együtt megnyílik a parancssor is, ahol a végső predikción ttovábbi információk listázódnak ki a program futása közben, amiket így könnyen nyomon követhetünk.
+Ha letöltöttünk minden szükséges filet, az app megnyitásávan egy ablak jelenik meg, ahol kiválaszthatjuk a modellt (ajánlott: 'buy_or_short.keras'), ezután a prediktálni kívánt adatsort .xlsx kiterjesztésben. Az ablakkal együtt megnyílik a parancssor is, ahol a végső predikción tul további információk listázódnak ki a program futása közben, amiket így könnyen nyomon követhetünk.
 
 #Test
 
