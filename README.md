@@ -18,11 +18,12 @@ Ezen a munkalapon megtalálható a modell, illetve egy azt használó (és a Pre
 
 #Prediction_app
 
-Ez az app a már betanított modellt használja 1 óra múlvai predikció készítésére. Ki tudjuk választani a prediktálni kívánt adatsort, mely kellő mennyiségű adatot és ezeket 15 perces felbontásban tartalmazza. Fontos még, hogy a program a záróárakat nézi, ami azt jelenti, hogy csak a 15 perces záróadatokat tartalmazó adatot tartalmazó file alapján készíti az elvárt predikciót. (Természetesen a 15 percestől eltérő felosztást is lehet használni, ekkor pl 5 perc esetén 5*4 perc azaz 20 perc múlvára fogja jósolni az értéket, habár a kimeneten továbbra is 1 óra szerepel, ezt a felhasználónak kell figyelembe vennie.) A modellt is ki kell választani amivel jósolni szeretnénk, ezt magunk is legenerálhatjuk, de egy már meglévő modell is található a fileok között ('buy_or_short.keras').
+Ez az app a már betanított modellt használja 1 óra múlvai predikció készítésére. Ki tudjuk választani a prediktálni kívánt adatsort, mely kellő mennyiségű adatot és ezeket 15 perces felbontásban tartalmazza. Fontos még, hogy a program a záróárakat nézi, ami azt jelenti, hogy csak a 15 perces záróadatokat tartalmazó adatot tartalmazó file alapján készíti az elvárt predikciót. (Természetesen a 15 percestől eltérő felosztást is lehet használni, ekkor pl 5 perc esetén 5*4 perc azaz 20 perc múlvára fogja jósolni az értéket, habár a kimeneten továbbra is 1 óra szerepel, ezt a felhasználónak kell figyelembe vennie.) A modellt is ki kell választani amivel jósolni szeretnénk, a már meglévő modell a fileok között található ('buy_or_short.keras').
 
 
 #installtion
 
+Ajánlott python 3.10.9-es verziót használmi, és a "Add Python 3.x to PATH" opciónak is be kell legyen pipálva telepítésnél, különben nem fog lefutni a program.
 Ha a meglévő modellt szeretnénk használni akkor először a parancssorban töltsük le a következő kellékeket az alábbi kóddal:
 
  pip install pandas==2.2.3 
@@ -31,11 +32,11 @@ Ha a meglévő modellt szeretnénk használni akkor először a parancssorban t�
  pip install scikit-learn==1.5.2 
  pip install matplotlib==3.9.3 
 
-Ajánlott python 3.10.9-es verziót használmi, és a "Add Python 3.x to PATH" opció, különben nem fog lefutni a program.  Ezután töltsük le az appot és a modellt.
+Ezután töltsük le az appot és a modellt, valamint a tesztadatot.
 
 #Use
 
-Ha letöltöttünk minden szükséges filet, az app megnyitásávan egy ablak jelenik meg, ahol kiválaszthatjuk a modellt (ajánlott: 'buy_or_short.keras'), ezután a prediktálni kívánt adatsort .xlsx kiterjesztésben. Az ablakkal együtt megnyílik a parancssor is, ahol a végső predikción tul további információk listázódnak ki a program futása közben, amiket így könnyen nyomon követhetünk.
+Ha letöltöttünk minden szükséges filet, az app megnyitásávan egy ablak jelenik meg, ahol kiválaszthatjuk a modellt (ajánlott: 'buy_or_short.keras'), ezután a prediktálni kívánt adatsort .xlsx kiterjesztésben. Az ablakkal együtt megnyílik a parancssor is, ahol a végső predikción túl további információk listázódnak ki a program futása közben, amiket így könnyen nyomon követhetünk.
 
 #Test
 
